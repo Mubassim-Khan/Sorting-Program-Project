@@ -12,6 +12,7 @@ public class testing {
         for (int i = 0; i < size; i++) {
             numArray[i] = scanner.nextInt();
         }
+        
         scanner.close();
 
         for (int i = 0; i < numArray.length; i++) {

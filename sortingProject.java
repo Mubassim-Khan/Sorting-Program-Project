@@ -6,7 +6,7 @@ public class sortingProject {
     static int temp;
 
     // Method to Take input in an array (underworking)
-    static int InputElements() {
+    static int[] InputElements() {
         System.out.print("Enter size of an array: ");
         int size = scanner.nextInt();
         int numArray[] = new int[size];
@@ -16,7 +16,7 @@ public class sortingProject {
         for (int i = 0; i < size; i++) {
             numArray[i] = scanner.nextInt();
         }
-        return size;
+        return numArray;
     }
 
     // Method of Printing Elements in an Array
@@ -24,12 +24,13 @@ public class sortingProject {
         for (int i : array) {
             System.out.print(i + " ");
         }
-        System.out.println("");
+        System.out.println();
     }
 
     // For printing list of operation
     static void operationList() {
-        System.out.println("\nPress 1: For Bubble Sort");
+        System.out.println("\n x-x-x-x-x-x-x-x-x-x-x-x-x-x-x\n");
+        System.out.println("Press 1: For Bubble Sort");
         System.out.println("Press 2: For Insertion Sort");
         System.out.println("Press 3: For Selection Sort");
         System.out.println("Press 4: For Merge Sort");
@@ -43,18 +44,8 @@ public class sortingProject {
     }
 
     // Method of Bubble Sorting
-    static void BubbleSort() {
-        System.out.print("Enter size of an array: ");
-        int size = scanner.nextInt();
-        // InputElements();
-        int numArray[] = new int[size];
+    static void BubbleSort(int[] numArray) {
         int n = numArray.length;
-
-        System.out.print("Enter elements: ");
-
-        for (int i = 0; i < size; i++) {
-            numArray[i] = scanner.nextInt();
-        }
 
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -65,24 +56,15 @@ public class sortingProject {
                 }
             }
         }
-
         System.out.println("Sorted Array using Bubble Sort");
         PrintArray(numArray);
     }
 
     // Method of Insertion Sort
-    static void InsertionSort() {
-        System.out.print("Enter size of an array: ");
-        int size = scanner.nextInt();
+    static void InsertionSort(int[] numArray) {
+        int n = numArray.length;
 
-        int numArray[] = new int[size];
-
-        System.out.print("Enter elements: ");
-        for (int i = 0; i < size; i++) {
-            numArray[i] = scanner.nextInt();
-        }
-
-        for (int i = 0; i < numArray.length; i++) {
+        for (int i = 0; i < n; i++) {
             temp = numArray[i];
             int j = i - 1;
             while (j >= 0 && numArray[j] > temp) {
@@ -91,26 +73,17 @@ public class sortingProject {
             }
             numArray[j + 1] = temp;
         }
-
         System.out.println("Sorted Array using Insertion Sort");
         PrintArray(numArray);
     }
 
-    // Method of Bubble Sorting
-    static void SelectionSort() {
-        System.out.print("Enter size of an array: ");
-        int size = scanner.nextInt();
+    // Method of Selection Sort
+    static void SelectionSort(int[] numArray) {
+        int n = numArray.length;
 
-        int numArray[] = new int[size];
-
-        System.out.print("Enter elements: ");
-        for (int i = 0; i < size; i++) {
-            numArray[i] = scanner.nextInt();
-        }
-
-        for (int i = 0; i < size - 1; i++) {
+        for (int i = 0; i < n - 1; i++) {
             int minIndex = i;
-            for (int j = i + 1; j < size; j++) {
+            for (int j = i + 1; j < n; j++) {
                 if (numArray[j] < numArray[minIndex]) {
                     minIndex = j;
                 }
@@ -119,14 +92,32 @@ public class sortingProject {
             numArray[i] = numArray[minIndex];
             numArray[minIndex] = temp;
         }
-
         System.out.println("Sorted Array using Selection Sort");
         PrintArray(numArray);
     }
 
+    // Method of Shell Sort
+    static void ShellSort(int[] numArray) {
+        int n = numArray.length;
+
+        for (int interval = n / 2; interval > 0; interval /= 2) {
+            for (int i = interval; i < n; i += 1) {
+                int temp = numArray[i];
+                int j;
+                for (j = i; j >= interval && numArray[j - interval] > temp; j -= interval) {
+                    numArray[j] = numArray[j - interval];
+                }
+                numArray[j] = temp;
+            }
+        }
+        System.out.println("Sorted Array using Shell Sort");
+        PrintArray(numArray);
+    } 
+
     // Main method
     public static void main(String[] args) {
         boolean isRunning;
+        int[] numArray;
 
         while (isRunning = true) {
             operationList();
@@ -136,13 +127,16 @@ public class sortingProject {
 
             switch (userValue) {
                 case 1:
-                    BubbleSort();
+                    numArray = InputElements();
+                    BubbleSort(numArray);
                     break;
                 case 2:
-                    InsertionSort();
+                    numArray = InputElements();
+                    InsertionSort(numArray);
                     break;
                 case 3:
-                    SelectionSort();
+                    numArray = InputElements();
+                    SelectionSort(numArray);
                     break;
                 case 4:
                     System.out.println("You pressed 4");
@@ -151,7 +145,8 @@ public class sortingProject {
                     System.out.println("You pressed 5");
                     break;
                 case 6:
-                    System.out.println("You pressed 6");
+                    numArray = InputElements();
+                    ShellSort(numArray);
                     break;
                 case 7:
                     System.out.println("You pressed 7");

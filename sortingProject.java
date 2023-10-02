@@ -56,8 +56,6 @@ public class sortingProject {
                 }
             }
         }
-        System.out.println("Sorted Array using Bubble Sort");
-        PrintArray(numArray);
     }
 
     // Method of Insertion Sort
@@ -73,8 +71,6 @@ public class sortingProject {
             }
             numArray[j + 1] = temp;
         }
-        System.out.println("Sorted Array using Insertion Sort");
-        PrintArray(numArray);
     }
 
     // Method of Selection Sort
@@ -92,8 +88,36 @@ public class sortingProject {
             numArray[i] = numArray[minIndex];
             numArray[minIndex] = temp;
         }
-        System.out.println("Sorted Array using Selection Sort");
-        PrintArray(numArray);
+    }
+
+    // Method of Quick Sort
+    // Swapping method (used in various places) 
+    static void swap(int[] numArray, int i, int j) {
+        temp = numArray[i];
+        numArray[i] = numArray[j];
+        numArray[j] = temp;
+    }
+
+    static int partition(int[] numArray, int low, int high) {
+        int pivot = numArray[high];
+        int i = (low - 1);
+
+        for (int j = low; j <= high - 1; j++) {
+            if (numArray[j] <= pivot) {
+                i++;
+                swap(numArray, i, j);
+            }
+        }
+        swap(numArray, i + 1, high);
+        return (i + 1);
+    }
+
+    static void QuickSort(int[] numArray, int low, int high) {
+        if (low < high) {
+            int partIndex = partition(numArray, low, high);
+            QuickSort(numArray, low, partIndex - 1);
+            QuickSort(numArray, partIndex + 1, high);
+        }
     }
 
     // Method of Shell Sort
@@ -102,7 +126,7 @@ public class sortingProject {
 
         for (int interval = n / 2; interval > 0; interval /= 2) {
             for (int i = interval; i < n; i += 1) {
-                int temp = numArray[i];
+                temp = numArray[i];
                 int j;
                 for (j = i; j >= interval && numArray[j - interval] > temp; j -= interval) {
                     numArray[j] = numArray[j - interval];
@@ -110,9 +134,38 @@ public class sortingProject {
                 numArray[j] = temp;
             }
         }
-        System.out.println("Sorted Array using Shell Sort");
-        PrintArray(numArray);
-    } 
+    }
+
+    // Method of Heap Sort
+    static void HeapSort(int[] numArray) {
+        int n = numArray.length;
+
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(numArray, n, i);
+        }
+
+        for (int i = n - 1; i >= 0; i--) {
+            swap(numArray, 0, i);
+            heapify(numArray, i, 0);
+        }
+    }
+
+    static void heapify(int[] numArray, int n, int i) {
+        int largest = i;
+        int left = 2 * i + 1;
+        int right = 2 * i + 2;
+
+        if (left < n && numArray[left] > numArray[largest]) {
+            largest = left;
+        }
+        if (right < n && numArray[right] > numArray[largest]) {
+            largest = right;
+        }
+        if (largest != i) {
+            swap(numArray, i, largest);
+            heapify(numArray, n, largest);
+        }
+    }
 
     // Main method
     public static void main(String[] args) {
@@ -129,27 +182,42 @@ public class sortingProject {
                 case 1:
                     numArray = InputElements();
                     BubbleSort(numArray);
+                    System.out.println("Sorted Array using Bubble Sort");
+                    PrintArray(numArray);
                     break;
                 case 2:
                     numArray = InputElements();
                     InsertionSort(numArray);
+                    System.out.println("Sorted Array using Insertion Sort");
+                    PrintArray(numArray);
                     break;
                 case 3:
                     numArray = InputElements();
                     SelectionSort(numArray);
+                    System.out.println("Sorted Array using Selection Sort");
+                    PrintArray(numArray);
                     break;
                 case 4:
                     System.out.println("You pressed 4");
                     break;
                 case 5:
-                    System.out.println("You pressed 5");
+                    numArray = InputElements();
+                    int size = numArray.length - 1;
+                    QuickSort(numArray, 0, size);
+                    System.out.println("Sorted Array using Quick Sort");
+                    PrintArray(numArray);
                     break;
                 case 6:
                     numArray = InputElements();
                     ShellSort(numArray);
+                    System.out.println("Sorted Array using Shell Sort");
+                    PrintArray(numArray);
                     break;
                 case 7:
-                    System.out.println("You pressed 7");
+                    numArray = InputElements();
+                    HeapSort(numArray);
+                    System.out.println("Sorted Array using Heap Sort");
+                    PrintArray(numArray);
                     break;
                 case 8:
                     System.out.println("You pressed 8");
@@ -169,7 +237,6 @@ public class sortingProject {
                     System.out.println("Please enter number according to list ");
                     break;
             }
-
             if (isRunning == false) {
                 break;
             }

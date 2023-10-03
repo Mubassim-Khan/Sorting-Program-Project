@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class sortingProject {
@@ -90,8 +91,73 @@ public class sortingProject {
         }
     }
 
+    // Method of Merge Sort
+    static void merge(int[] numArray, int p, int q, int r) {
+        int n1 = q - p + 1;
+        int n2 = r - q;
+
+        int L[] = new int[n1];
+        int R[] = new int[n2];
+
+        for (int i = 0; i < n1; i++) {
+            L[i] = numArray[p + i];
+        }
+        for (int j = 0; j < n2; j++) {
+            R[j] = numArray[q + j + 1];
+        }
+
+        int i, j, k;
+        i = 0; // To Mantain Curent Index of sub-arrays
+        j = 0;
+        k = p; // To Mantain Curent Index of main array
+
+        /*
+         * Pick larger element among L & M, & place in
+         * correct position until end of array is reached
+         */
+        while (i < n1 && j < n2) {
+            if (L[i] <= R[j]) {
+                numArray[k] = L[i];
+                i++;
+            } else {
+                numArray[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+
+        /*
+         * Pick up remaining elements from main array & place
+         * in sub-array, if we run out of in L or R
+         */
+        while (i < n1) {
+            numArray[k] = L[i];
+            i++;
+            k++;
+        }
+        while (j < n2) {
+            numArray[k] = R[j];
+            j++;
+            k++;
+        }
+    }
+
+    static void MergeSort(int[] numArray, int l, int r) {
+        // Divide an array into 2 parts 'l' & 'r'
+        if (l < r) {
+            // 'm' is the midpoint of dividing array into 2 parts.
+            int m = (l + r) / 2;
+            // 1st sub-array
+            MergeSort(numArray, l, m);
+            // 2nd sub-array
+            MergeSort(numArray, m + 1, r);
+            // Merge both sub-arrays
+            merge(numArray, l, m, r);
+        }
+    }
+
     // Method of Quick Sort
-    // Swapping method (used in various places) 
+    // Swapping method (used in various places)
     static void swap(int[] numArray, int i, int j) {
         temp = numArray[i];
         numArray[i] = numArray[j];
@@ -167,10 +233,109 @@ public class sortingProject {
         }
     }
 
+    // Method of Counting Sort
+    static void CountingSort(int[] numArray, int size) {
+        int outputArray[] = new int[size + 1];
+
+        // Find largest number in array
+        int max = outputArray[0];
+        for (int i = 1; i < size; i++) {
+            if (numArray[i] > max) {
+                max = numArray[i];
+            }
+        }
+
+        int count[] = new int[max + 1];
+
+        // Put zeros in count array
+        Arrays.fill(count, 0);
+
+        // Store count of each element
+        for (int i = 0; i < size; i++) {
+            count[numArray[i]]++;
+        }
+
+        // Store commulative count of array
+        for (int i = 1; i <= max; i++) {
+            count[i] += count[i - 1];
+        }
+
+        // Place elements from count & original array into output array
+        for (int i = size - 1; i >= 0; i--) {
+            outputArray[count[numArray[i]] - 1] = numArray[i];
+            count[numArray[i]]--;
+        }
+
+        // Copy sorted elements into output array
+        for (int i = 0; i < size; i++) {
+            numArray[i] = outputArray[i];
+        }
+    }
+
+    // Method of Radix Sort
+    static void countingSortForRadix(int[] numArray, int size, int place) {
+        int outputArray[] = new int[size];
+
+        // Find largest number in array
+        int max = maxElement(numArray, size);
+
+        int count[] = new int[max + 1];
+
+        // Put zeros in count array
+        Arrays.fill(count, 0);
+
+        // Calculate count of elements
+        for (int i = 0; i < size; i++) {
+            count[(numArray[i] / place) % 10]++;
+        }
+
+        // Calculate commulative count of array
+        for (int i = 1; i < 10; i++) {
+            count[i] += count[i - 1];
+        }
+
+        // Place elements from count & original array into output array
+        for (int i = size - 1; i >= 0; i--) {
+            // outputArray[count[(numArray[i] / place) % 10] - 1] = numArray[i];
+            // count[(numArray[i] / place) % 10]--;
+            int digit = (numArray[i] / place) % 10;
+            outputArray[count[digit] - 1] = numArray[i];
+            count[digit]--;
+        }
+
+        // Copy sorted elements into output array
+        for (int i = 0; i < size; i++) {
+            numArray[i] = outputArray[i];
+        }
+    }
+
+    static int maxElement(int[] numArray, int n) {
+        int max = numArray[0];
+        for (int i = 1; i < n; i++) {
+            if (numArray[i] > max) {
+                max = numArray[i];
+            }
+        }
+        return max;
+    }
+
+    static void RadixSort(int[] numArray, int size) {
+        int max = maxElement(numArray, size);
+        for (int place = 1; max / place > 0; place *= 10) {
+            countingSortForRadix(numArray, size, place);
+        }
+    }
+
+    // Method of Bucket Sort
+    static void BucketSort(int[] numArray) {
+
+    }
+
     // Main method
     public static void main(String[] args) {
         boolean isRunning;
         int[] numArray;
+        int size;
 
         while (isRunning = true) {
             operationList();
@@ -180,53 +345,75 @@ public class sortingProject {
 
             switch (userValue) {
                 case 1:
+                    System.out.println("\nYou Selected 'BUBBLE SORT'\n");
                     numArray = InputElements();
                     BubbleSort(numArray);
                     System.out.println("Sorted Array using Bubble Sort");
                     PrintArray(numArray);
                     break;
                 case 2:
+                    System.out.println("\nYou Selected 'INSERTION SORT'\n");
                     numArray = InputElements();
                     InsertionSort(numArray);
                     System.out.println("Sorted Array using Insertion Sort");
                     PrintArray(numArray);
                     break;
                 case 3:
+                    System.out.println("\nYou Selected 'SELECTION SORT'\n");
                     numArray = InputElements();
                     SelectionSort(numArray);
                     System.out.println("Sorted Array using Selection Sort");
                     PrintArray(numArray);
                     break;
                 case 4:
-                    System.out.println("You pressed 4");
+                    System.out.println("\nYou Selected 'MERGE SORT'\n");
+                    numArray = InputElements();
+                    size = numArray.length - 1;
+                    MergeSort(numArray, 0, size);
+                    System.out.println("Sorted Array using Selection Sort");
+                    PrintArray(numArray);
                     break;
                 case 5:
+                    System.out.println("\nYou Selected 'QUICK SORT'\n");
                     numArray = InputElements();
-                    int size = numArray.length - 1;
+                    size = numArray.length - 1;
                     QuickSort(numArray, 0, size);
                     System.out.println("Sorted Array using Quick Sort");
                     PrintArray(numArray);
                     break;
                 case 6:
+                    System.out.println("\nYou Selected 'SHELL SORT'\n");
                     numArray = InputElements();
                     ShellSort(numArray);
                     System.out.println("Sorted Array using Shell Sort");
                     PrintArray(numArray);
                     break;
                 case 7:
+                    System.out.println("\nYou Selected 'HEAP SORT'\n");
                     numArray = InputElements();
                     HeapSort(numArray);
                     System.out.println("Sorted Array using Heap Sort");
                     PrintArray(numArray);
                     break;
                 case 8:
-                    System.out.println("You pressed 8");
+                    System.out.println("\nYou Selected 'COUNTING SORT'\n");
+                    numArray = InputElements();
+                    size = numArray.length;
+                    CountingSort(numArray, size);
+                    System.out.println("Sorted array using Counting Sort");
+                    PrintArray(numArray);
                     break;
                 case 9:
-                    System.out.println("You pressed 9");
+                    System.out.println("\nYou Selected 'RADIX SORT'\n");
+                    numArray = InputElements();
+                    size = numArray.length;
+                    RadixSort(numArray, size);
+                    System.out.println("Sorted array using Radix Sort");
+                    PrintArray(numArray);
                     break;
                 case 10:
-                    System.out.println("You pressed 10");
+                    System.out.println("\nYou Selected 'BUCKET SORT'\n");
+
                     break;
                 case 0:
                     System.out.println("You quit the program");

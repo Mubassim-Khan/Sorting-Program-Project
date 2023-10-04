@@ -1,5 +1,4 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class sortingProject {
     // Global Vars
@@ -327,8 +326,52 @@ public class sortingProject {
     }
 
     // Method of Bucket Sort
-    static void BucketSort(int[] numArray) {
+    static void BucketSort(int[] numArray, int n) {
+        if (n <= 0) {
+            return;
+        }
 
+        // Find Max & Min values in array
+        int maxValue = numArray[0];
+        int minValue = numArray[0];
+
+        for (int i = 1; i < n; i++) {
+            if (numArray[i] > maxValue) {
+                maxValue = numArray[i];
+            }
+            if (numArray[i] < minValue) {
+                minValue = numArray[i];
+            }
+        }
+
+        // For finding range of values in Array
+        int range = maxValue - minValue + 1;
+
+        // Creating empty buckets
+        @SuppressWarnings("unchecked")
+        ArrayList<Integer>[] buckets = new ArrayList[range];
+        for (int i = 0; i < range; i++) {
+            buckets[i] = new ArrayList<Integer>();
+        }
+
+        // Put elements in bucket
+        for (int i = 0; i < n; i++) {
+            int bucketIndex = numArray[i] - minValue;
+            buckets[bucketIndex].add(numArray[i]);
+        }
+
+        // Sort the elements of each bucket
+        for (int i = 0; i < range; i++) {
+            Collections.sort((buckets[i]));
+        }
+
+        // Get the sorted array
+        int index = 0;
+        for (int i = 0; i < range; i++) {
+            for (int j = 0; j < buckets[i].size(); j++) {
+                numArray[index++] = buckets[i].get(j);
+            }
+        }
     }
 
     // Main method
@@ -413,7 +456,11 @@ public class sortingProject {
                     break;
                 case 10:
                     System.out.println("\nYou Selected 'BUCKET SORT'\n");
-
+                    numArray = InputElements();
+                    size = numArray.length;
+                    BucketSort(numArray, size);
+                    System.out.println("Sorted Array using Bucket Sort");
+                    PrintArray(numArray);
                     break;
                 case 0:
                     System.out.println("You quit the program");

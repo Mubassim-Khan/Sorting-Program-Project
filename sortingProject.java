@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class SortingProject {
+public class sortingProject {
     // Global Vars
     static Scanner scanner = new Scanner(System.in);
     static int temp;

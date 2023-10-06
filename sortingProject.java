@@ -1,11 +1,11 @@
 import java.util.*;
 
-public class sortingProject {
+public class SortingProject {
     // Global Vars
     static Scanner scanner = new Scanner(System.in);
     static int temp;
 
-    // Method to Take input in an array (underworking)
+    // Method to Take input in an array
     static int[] InputElements() {
         System.out.print("Enter size of an array: ");
         int size = scanner.nextInt();

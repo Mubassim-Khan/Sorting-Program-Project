@@ -1,4 +1,4 @@
-# Sorting Program in Java
+# Sorting Program in Java (Project)
 This Repository contains sorting program in Java, which contains 10 Sorting methods/algorithms, helpful for understanding the purpose & method of as well as structure of programs.
 
 Following are the Sorting Methods available:
